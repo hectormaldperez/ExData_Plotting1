@@ -1,0 +1,15 @@
+png(file = "plot2.jpg",width = 480, height = 480)
+
+library(data.table)
+subdata<- fread("household_power_consumption.txt")
+library(dplyr)
+dat<-subdata %>% filter(Date=="1/2/2007"| Date=="2/2/2007")
+#dat$Date<-as.Date(dat$Date,"%d/%m/%Y")
+#dat$wday <- weekdays(dat$Date)
+#dat$time<-as.POSIXct(dat$Time,format="%H:%M:%S")
+library(lubridate)
+dat$ldate <- dmy_hms(paste(dat$Date, dat$Time))
+plot(dat$ldate, dat$Global_active_power, type="n", ylab="Global Active Power (killowatts)", xlab="")
+lines(dat$ldate, dat$Global_active_power)
+
+dev.off()

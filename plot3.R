@@ -1,0 +1,17 @@
+png(file = "plot3.jpg",width = 480, height = 480)
+
+library(data.table)
+subdata<- fread("household_power_consumption.txt")
+library(dplyr)
+dat<-subdata %>% filter(Date=="1/2/2007"| Date=="2/2/2007")
+#dat$Date<-as.Date(dat$Date,"%d/%m/%Y")
+#dat$wday <- weekdays(dat$Date)
+#dat$time<-as.POSIXct(dat$Time,format="%H:%M:%S")
+library(lubridate)
+dat$ldate <- dmy_hms(paste(dat$Date, dat$Time))
+plot(dat$ldate, dat$Sub_metering_1,type="l", ylab="Energy sub metering", xlab="")
+lines(dat$ldate, dat$Sub_metering_2, col="red")
+lines(dat$ldate, dat$Sub_metering_3, col="blue")
+legend("topright",lty=1,col=c("black","red","blue"), legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+
+dev.off()
